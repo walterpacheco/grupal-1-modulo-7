@@ -1,0 +1,17 @@
+doctype html
+html
+  head
+    title Lista de Estudiantes
+  body
+    h1 Lista de Estudiantes
+    if estudiantes.length
+      ul
+        each estudiante in estudiantes
+          li
+            a(href=`/estudiantes/${estudiante.rut}`) #{estudiante.nombre} - #{estudiante.rut} - #{estudiante.curso} - #{estudiante.nivel}
+            | 
+            a(href=`/estudiantes/editar/${estudiante.rut}`) Editar
+            form(action=`/estudiantes/eliminar/${estudiante.rut}` method="POST" style="display:inline")
+              button(type="submit") Eliminar
+    else
+      p No hay estudiantes registrados.

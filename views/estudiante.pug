@@ -1,0 +1,19 @@
+doctype html
+html
+  head
+    title Estudiante Detalles
+  body
+    h1 Detalles del Estudiante
+    p
+      strong Nombre:
+      | #{estudiante.nombre}
+    p
+      strong RUT:
+      | #{estudiante.rut}
+    p
+      strong Curso:
+      | #{estudiante.curso}
+    p
+      strong Nivel:
+      | #{estudiante.nivel}
+    a(href="/estudiantes") Volver a la lista de estudiantes

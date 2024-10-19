@@ -1,0 +1,17 @@
+doctype html
+html
+  head
+    title Editar Estudiante
+  body
+    h1 Editar Estudiante
+    form(action=`/estudiantes/editar/${estudiante.rut}` method="POST")
+      label(for="nombre") Nombre:
+      input(type="text" name="nombre" id="nombre" value=estudiante.nombre required)
+      br
+      label(for="curso") Curso:
+      input(type="text" name="curso" id="curso" value=estudiante.curso required)
+      br
+      label(for="nivel") Nivel:
+      input(type="text" name="nivel" id="nivel" value=estudiante.nivel required)
+      br
+      button(type="submit") Guardar Cambios
