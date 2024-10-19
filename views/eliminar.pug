@@ -1,0 +1,15 @@
+doctype html
+html
+  head
+    title Eliminar Estudiante
+    link(rel='stylesheet', href='/styles.css')
+
+  body
+    h1 Eliminar Estudiante
+    form(action='/eliminar', method='POST')
+      div
+        label(for='rut') Ingrese RUT del Estudiante a Eliminar:
+        input(type='text', name='rut', required)
+      div
+        button(type='submit') Eliminar Estudiante
+    a(href='/') Regresar

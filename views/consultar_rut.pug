@@ -1,0 +1,25 @@
+doctype html
+html
+  head
+    title Estudiante Detalles
+    link(rel='stylesheet', href='/styles.css')
+
+  body
+    h1 Consultar estudiante por RUT
+    form(action='/consultar-rut', method='POST')
+    div   
+      label(for='rut') Ingrese RUT:
+      input(type='text', name='rut', required)
+    div 
+      button(type='submit') Consultar 
+    a(href='/') Regresar
+    
+    if estudiante 
+      h2 Estudiante
+      p Nombre: #{estudiante.nombre}
+      p RUT: #{estudiante.rut}
+      p Curso: #{estudiante.curso}
+      p Nivel: #{estudiante.nivel}
+    else 
+      p No se encontro el estudiante
+    a(href="/estudiantes") Volver a la lista de estudiantes
