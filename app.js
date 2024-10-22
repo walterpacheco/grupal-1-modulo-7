@@ -3,7 +3,7 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
 
-const estudianteController = require('./controllers/estudianteController');
+const usuarioController = require('./controllers/usuarioController');
 
 dotenv.config();
 
@@ -22,18 +22,18 @@ app.get('/', (req, res) => {
 })
 
 //rutas
-app.get('/agregar', estudianteController.formularioAgregar);
-app.get('/agregar', estudianteController.agregarEstudiante);
+app.get('/agregar', usuarioController.formularioAgregar);
+app.post('/agregar', usuarioController.agregarUsuario);
 
-app.get('/consultar', estudianteController.consultarEstudiantes);
-app.get('/consultar-rut', estudianteController.formularioConsultarRut);
-app.post('/consultar-rut', estudianteController.consultarEstudiantePorRut);
+app.get('/consultar', usuarioController.consultarUsuarios);
+app.get('/consultar-id', usuarioController.formularioConsultarId);
+app.post('/consultar-id', usuarioController.consultarUsuarioPorId);
 
-app.get('/actualizar/:rut', estudianteController.formularioActualizar);
-app.post('/actualizar', estudianteController.actualizarEstudiante);
+app.get('/actualizar/:id', usuarioController.formularioActualizar);
+app.post('/actualizar/:id', usuarioController.actualizarUsuario);
 
-app.get('/eliminar', estudianteController.formularioEliminar);
-app.post('eliminar', estudianteController.eliminarEstudiante);
+app.get('/eliminar/:id', usuarioController.formularioEliminar);
+app.post('/eliminar/:id', usuarioController.eliminarUsuario);
 
 
 const PUERTO = process.env.PUERTO || 3000;
