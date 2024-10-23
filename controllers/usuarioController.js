@@ -1,4 +1,5 @@
 const usuarioServicio = require('../services/usuarioServicio');
+const Usuario = require('../models/Usuario');
 
 const formularioAgregar = (req, res) => {
     res.render('agregar');
@@ -62,12 +63,8 @@ const actualizarUsuario = (req, res) => {
 };
 
 
-const formularioEliminar = (req, res) => {
-    res.render('eliminar');
-};
-
 const eliminarUsuario = (req, res) => {
-    const { id } = req.body;
+    const { id } = req.params;
     usuarioServicio.eliminarUsuario(id)
         .then(usuario => {
             if (usuario) {
@@ -87,6 +84,5 @@ module.exports = {
     consultarUsuarioPorId,
     formularioActualizar,
     actualizarUsuario,
-    formularioEliminar,
     eliminarUsuario,
 };

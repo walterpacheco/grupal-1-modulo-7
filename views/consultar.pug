@@ -29,9 +29,17 @@ html
                 td= usuario.rol
                 td
                   a(href=`/actualizar/${usuario.id}`, class='btn btn-warning btn-sm me-2') Editar
-                  a(href=`/eliminar/${usuario.id}`, class='btn btn-danger btn-sm') Eliminar
-      .text-center.mt-4
-        a(href='/agregar', class='btn btn-success') Agregar Nuevo Usuario
+                  a(href='#', class='btn btn-danger btn-sm', onclick=`eliminarUsuario(${usuario.id})`) Eliminar
 
+  
+      form#formEliminar(method='POST', style='display:none')
+        input(type='hidden', name='_method', value='DELETE')
 
-a(href='/') Regresar
+    script.
+      function eliminarUsuario(id) {
+        const form = document.getElementById('formEliminar');
+        form.action = `/eliminar/${id}`;
+        form.submit();
+      }
+
+    a(href='/', class='btn btn-primary w-40') Regresar
