@@ -2,17 +2,22 @@ const express = require('express');
 const router = express.Router();
 const usuarioController = require('../controllers/usuarioController');
 
-// Rutas para los usuarios
+// Rutas para agregar un nuevo usuario
 router.get('/agregar', usuarioController.formularioAgregar);
 router.post('/agregar', usuarioController.agregarUsuario);
 
-router.get('/consultar', usuarioController.consultarUsuarios);
-router.get('/consultar-id', usuarioController.formularioConsultarId);
-router.post('/consultar-id', usuarioController.consultarUsuarioPorId);
+router.get('/buscar', usuarioController.formularioBuscarCorreo);
+// Ruta para consultar usuarios por correo
+router.post('/consultar-correo', usuarioController.consultarUsuarioPorCorreo);
 
-router.get('/actualizar/:id', usuarioController.formularioActualizar);
-router.post('/actualizar/:id', usuarioController.actualizarUsuario);
+// Ruta para ver todos los usuarios
+router.get('/', usuarioController.consultarUsuarios);
 
-router.post('/eliminar/:id', usuarioController.eliminarUsuario);
+// Ruta para actualizar un usuario
+router.get('/:id/actualizar', usuarioController.formularioActualizar);
+router.post('/:id/actualizar', usuarioController.actualizarUsuario);
+
+// Ruta para eliminar un usuario
+router.post('/:id/eliminar', usuarioController.eliminarUsuario);
 
 module.exports = router;

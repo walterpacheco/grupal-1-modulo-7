@@ -1,39 +1,47 @@
 const Usuario = require('../models/Usuario');
 
-const agregarUsuario = async (datos) => {
-    return await Usuario.create(datos);
-    };
+async function agregarUsuario(user_name, password, correo, nombre, rut, rol) {
+    return await Usuario.create({
+        user_name,
+        password,
+        correo,
+        nombre,
+        rut,
+        rol
+    });
+}
 
-const consultarUsuarios = async () => {
+async function consultarUsuarios() {
     return await Usuario.findAll();
-};
+}
 
-const consultarUsuarioPorId = async (id) => {
+async function consultarUsuarioPorId(id) {
     return await Usuario.findByPk(id);
-    };
+}
 
-const actualizarUsuario = async (id, datos) => {
-    const usuario = await Usuario.findByPk(id);
-    if (usuario) {
-        return await usuario.update(datos);
-    }
-    return null;
-    };
+async function consultarUsuarioPorCorreo(correo) {
+    return await Usuario.findOne({
+        where: { correo }
+    });
+}
 
-const eliminarUsuario = async (id) => {
-    const usuario = await Usuario.findByPk(id);
-    if (usuario) {
-        return await usuario.destroy();
-    }
-    return null;
-    };
+async function actualizarUsuario(id, user_name, password, correo, nombre, rut, rol) {
+    return await Usuario.update({ user_name, password, correo, nombre, rut, rol }, {
+        where: { id }
+    });
+}
 
-
+async function eliminarUsuario(id) {
+    return await Usuario.destroy({
+        where: { id }
+    });
+}
 
 module.exports = {
     agregarUsuario,
     consultarUsuarios,
     consultarUsuarioPorId,
+    consultarUsuarioPorCorreo, 
     actualizarUsuario,
     eliminarUsuario
 };

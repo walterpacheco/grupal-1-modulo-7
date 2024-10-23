@@ -1,37 +1,42 @@
-const { Datatypes } = require('sequelize');
-const { sequelize } = require('../config/db');
+const { DataTypes } = require('sequelize');
+const { sequelize } = require('../config/db');  // Importación correcta del objeto sequelize
 
 const Usuario = sequelize.define('Usuario', {
-    id: {
-        type: Datatypes.UUIDV4,
-        defaultValue: UUIDV4,
-        allowNull: false,
-        primaryKey: true,
+  id: {
+    type: DataTypes.UUID,
+    defaultValue: DataTypes.UUIDV4,
+    allowNull: false,
+    primaryKey: true,
+  },
+  user_name: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  password: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  correo: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    validate: {
+      isEmail: true,
     },
-    user_name: {
-        type: Datatypes.STRING,
-        allowNull: false,
-    },
-    password: {
-        type: Datatypes.STRING,
-        allowNull: false,
-    },
-    correo: {
-        type: Datatypes.STRING,
-        allowNull: false,
-    },
-    nombre: {
-        type: Datatypes.STRING,
-        allowNull: false,
-    },
-    rut: {
-        type: Datatypes.STRING,
-        allowNull: false,
-    },
-    rol: {
-        type: Datatypes.STRING,
-        allowNull: false,
-    },
+  },
+  nombre: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  rut: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  rol: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+}, {
+  timestamps: true,  // Para incluir createdAt y updatedAt automáticamente
 });
 
 module.exports = Usuario;
