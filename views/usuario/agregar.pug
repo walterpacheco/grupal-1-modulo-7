@@ -21,14 +21,16 @@ html
               input(type='email', name='correo', class='form-control', required)
             .mb-3
               label(for='nombre', class='form-label') Nombre
-              input(type='text', name='nombre', class='form-control', required)
+              input(type='text', name='nombre', class='form-control')
             .mb-3
               label(for='rut', class='form-label') RUT
-              input(type='text', name='rut', class='form-control', required)
+              input(type='text', name='rut', class='form-control')
             .mb-3
               label(for='rol', class='form-label') Rol
               select(name='rol', class='form-select')
-                option(value='admin') Admin
-                option(value='shopper') Shopper
+                option(value='admin') admin
+                option(value='comprador') comprador
             button(type='submit', class='btn btn-primary w-100') Agregar Usuario
-          a(href='/', class='btn btn-secondary w-100 mt-3') Regresar
+
+
+              a(href='/', class='btn btn-primary w-100') Regresar

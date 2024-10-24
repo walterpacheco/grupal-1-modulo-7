@@ -1,47 +1,42 @@
+const bcrypt = require('bcrypt');
 const Usuario = require('../models/Usuario');
 
-async function agregarUsuario(user_name, password, correo, nombre, rut, rol) {
-    return await Usuario.create({
-        user_name,
-        password,
-        correo,
-        nombre,
-        rut,
-        rol
-    });
-}
+const agregarUsuario = async (user_name, password, correo, nombre, rut, rol) => {
+    const hashedPassword = await bcrypt.hash(password, 10)
+    return await Usuario.create({user_name, password: hashedPassword, correo, nombre, rut, rol});
+    };
 
-async function consultarUsuarios() {
+const consultarUsuarios = async () => {
     return await Usuario.findAll();
-}
+};
 
-async function consultarUsuarioPorId(id) {
-    return await Usuario.findByPk(id);
-}
+const consultarUsuarioPorUsername = async (user_name) => {
+    return await Usuario.findOne({ where: { user_name } });
+    };
 
-async function consultarUsuarioPorCorreo(correo) {
-    return await Usuario.findOne({
-        where: { correo }
-    });
-}
+const actualizarUsuario = async (user_name, datos) => {
+    const usuario = await Usuario.findOne({ where: { user_name } });
+    if (usuario) {
+        return await usuario.update(datos);
+    }
+    return null;
+    };
 
-async function actualizarUsuario(id, user_name, password, correo, nombre, rut, rol) {
-    return await Usuario.update({ user_name, password, correo, nombre, rut, rol }, {
-        where: { id }
-    });
-}
+const eliminarUsuario = async (id) => {
+    const usuario = await Usuario.findByPk(id);
+    if (usuario) {
+        await usuario.destroy();
+        return usuario;
+    }
+    return null;
+    };
 
-async function eliminarUsuario(id) {
-    return await Usuario.destroy({
-        where: { id }
-    });
-}
+
 
 module.exports = {
     agregarUsuario,
     consultarUsuarios,
-    consultarUsuarioPorId,
-    consultarUsuarioPorCorreo, 
+    consultarUsuarioPorUsername,
     actualizarUsuario,
     eliminarUsuario
 };

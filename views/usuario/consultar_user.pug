@@ -1,0 +1,24 @@
+doctype html
+html
+  head
+    title Consultar Usuario por User_name
+    link(rel='stylesheet', href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css')
+    link(rel='stylesheet', href='/styles.css')
+  body
+    .container.mt-5
+      h1.text-center Consultar Usuario por User_name
+      form(action='/usuarios/consultar-user', method='POST')
+        .mb-3
+          label(for='user_name', class='form-label') Username
+          input(type='text', name='user_name', class='form-control')
+        button(type='submit', class='btn btn-primary w-100') Consultar Usuario
+
+      if usuario
+        h2 Detalles del Usuario
+        p User_name: #{usuario.user_name}
+        p Correo: #{usuario.correo}
+        p Nombre: #{usuario.nombre}
+        p Rol: #{usuario.rol}
+      else
+        p No se encontró el usuario
+    a(href="/usuarios") Volver a la lista de usuarios

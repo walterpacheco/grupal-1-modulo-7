@@ -10,8 +10,7 @@ html
       .row.justify-content-center
         .col-md-6
           h1.text-center Actualizar Usuario
-          // Acción del formulario actualizada a la ruta correcta
-          form(action=`/usuarios/${usuario.id}/actualizar`, method='POST')
+          form(action=`/usuarios/${usuario.user_name}/actualizar`, method='POST')
             .mb-3
               label(for='user_name', class='form-label') Username
               input(type='text', name='user_name', value=usuario.user_name, class='form-control', required)
@@ -31,6 +30,6 @@ html
               label(for='rol', class='form-label') Rol
               select(name='rol', class='form-select')
                 option(value='admin', selected=usuario.rol == 'admin') Admin
-                option(value='shopper', selected=usuario.rol == 'shopper') Shopper
+                option(value='comprador', selected=usuario.rol == 'comprador') Comprador
             button(type='submit', class='btn btn-primary w-100') Actualizar Usuario
-            a(href='/usuarios', class='btn btn-secondary w-100 mt-3') Regresar
+            a(href='/') Regresar
