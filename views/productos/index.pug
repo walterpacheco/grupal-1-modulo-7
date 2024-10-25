@@ -29,7 +29,7 @@ html
                 a.btn.btn-info(href=`/productos/${producto.id}`) Ver Detalles
               
       h2.mt-5 Crear un nuevo producto
-      form(action="/productos" method="POST" class="mt-3")
+      form(action="/productos/agregar" method="POST" class="mt-3")
         .form-group
           label(for="nombre") Nombre:
           input.form-control(type="text" name="nombre" required)

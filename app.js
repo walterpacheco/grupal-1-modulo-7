@@ -35,9 +35,10 @@ app.set('views', path.join(__dirname, 'views'));
 app.get('/', (req, res) => {
   res.render('index');
 })
+
 app.use('/usuarios', usuarioRutas);
-app.use('/productos', productoRutas);
 app.use('/categorias', categoriaRutas);
+app.use('/productos', productoRutas);
 
 const PUERTO = process.env.PUERTO || 3000;
 app.listen(PUERTO, () => {
