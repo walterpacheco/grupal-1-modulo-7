@@ -3,7 +3,7 @@ const Usuario = require('../models/Usuario');
 
 // Renderizar el formulario para agregar un nuevo usuario
 const formularioAgregar = (req, res) => {
-    res.render('agregar');
+    res.render('usuario/agregar');
 };
 
 // Agregar un nuevo usuario
@@ -25,7 +25,7 @@ const agregarUsuario = (req, res) => {
 // Consultar todos los usuarios
 const consultarUsuarios = (req, res) => {
     usuarioServicio.consultarUsuarios()
-        .then(usuarios => res.render('consultar', { usuarios }))
+        .then(usuarios => res.render('usuario/consultar', { usuarios }))
         .catch(err => res.status(500).send('Error al consultar usuarios: ' + err.message));
 }
 
@@ -55,7 +55,7 @@ const formularioActualizar = (req, res) => {
     usuarioServicio.consultarUsuarioPorId(id)
     .then(usuario => {
         if (usuario) {
-            res.render('actualizar', { usuario });
+            res.render('usuario/actualizar', { usuario });
         } else {
             res.status(404).send('No se encontró usuario con ese Id');
         }
