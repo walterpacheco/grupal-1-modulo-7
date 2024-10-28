@@ -10,29 +10,30 @@ const formularioRegistro = (req, res) => {
 
 // Registrar usuario
 const registrarUsuario = async (req, res) => {
-    const errores = validationResult(req);
-    if (!errores.isEmpty()) {
-      return res.render('auth/registro', { errores: errores.array() });
-    }
+  const errores = validationResult(req);
+  if (!errores.isEmpty()) {
+    return res.render('auth/registro', { errores: errores.array() });
+  }
+
+  const { user_name, nombre, rut, correo, password } = req.body;
   
-    const { user_name, nombre, rut, correo, password } = req.body; // Agrega `user_name` y `rut`
+  try {
+    const usuarioExistente = await Usuario.findOne({ where: { correo } });
+    if (usuarioExistente) {
+      return res.render('auth/registro', { errores: [{ msg: 'Este correo ya está registrado' }] });
+    }
+
+    // Cifrar la contraseña
+    const hash = await bcrypt.hash(password, 10);
     
-    try {
-      const usuarioExistente = await Usuario.findOne({ where: { correo } });
-      if (usuarioExistente) {
-        return res.render('auth/registro', { errores: [{ msg: 'Este correo ya está registrado' }] });
-      }
-  
-      // Cifrar la contraseña
-      const hash = await bcrypt.hash(password, 10);
-      
-      // Crear el usuario con todos los campos necesarios
-      await Usuario.create({ user_name, nombre, rut, correo, password: hash, rol: 'comprador' });
-      res.redirect('/auth/login');
-    } catch (error) {
-      res.status(500).send('Error en el registro: ' + error.message);
-    }
-  };
+    // Crear el usuario con la contraseña cifrada
+    await Usuario.create({ user_name, nombre, rut, correo, password: hash, rol: 'comprador' });
+    res.redirect('/auth/login');
+  } catch (error) {
+    res.status(500).send('Error en el registro: ' + error.message);
+  }
+};
+
   
 
 // Renderizar formulario de login
@@ -40,9 +41,8 @@ const formularioLogin = (req, res) => {
   res.render('auth/login', { errores: [] });  // Inicializamos errores como un array vacío
 };
 
-// Iniciar sesión
 const iniciarSesion = async (req, res) => {
-  const { correo, password } = req.body;  // Usamos `password` aquí también
+  const { correo, password } = req.body;
   try {
     const usuario = await Usuario.findOne({ where: { correo } });
     
@@ -52,7 +52,7 @@ const iniciarSesion = async (req, res) => {
     }
 
     // Comparar contraseñas
-    const esContraseñaCorrecta = await bcrypt.compare(password, usuario.password);  // Comparamos con `usuario.password`
+    const esContraseñaCorrecta = await bcrypt.compare(password, usuario.password);
     if (!esContraseñaCorrecta) {
       return res.render('auth/login', { errores: [{ msg: 'Credenciales incorrectas' }] });
     }
@@ -67,6 +67,7 @@ const iniciarSesion = async (req, res) => {
     res.status(500).send('Error en el login: ' + error.message);
   }
 };
+
 
 module.exports = {
   formularioRegistro,
