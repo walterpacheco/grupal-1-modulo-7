@@ -4,7 +4,8 @@ const path = require('path');
 const dotenv = require('dotenv');
 const { conectarBD, sequelize } = require('./config/db');
 const usuarioRutas = require('./routes/usuarioRutas');
-const productoRutas = require('./routes/productoRutas'); // Importa las rutas de productos
+const productoRutas = require('./routes/productoRutas');
+const authRoutes = require('./routes/authRoutes');
 
 dotenv.config();
 
@@ -16,6 +17,8 @@ sequelize.sync().then(() => {
   console.log('Modelos sincronizados con la base de datos.');
 });
 
+
+app.use('/auth', authRoutes);
 // Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());

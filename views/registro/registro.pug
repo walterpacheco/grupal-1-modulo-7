@@ -1,0 +1,25 @@
+doctype html
+html
+  head
+    title Registro
+  body
+    .container.mt-5
+      h1 Registro de Usuario
+      form(action="/auth/registro" method="POST")
+        each error in errores
+          .alert.alert-danger #{error.msg}
+
+        .form-group
+          label(for="nombre") Nombre
+          input.form-control(type="text" name="nombre" required)
+
+        .form-group
+          label(for="correo") Correo
+          input.form-control(type="email" name="correo" required)
+
+        .form-group
+          label(for="contraseña") Contraseña
+          input.form-control(type="password" name="contraseña" required)
+
+        button.btn.btn-primary(type="submit") Registrarse
+      a(href='/auth/login') ¿Ya tienes cuenta? Inicia sesión
