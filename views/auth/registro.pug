@@ -1,0 +1,49 @@
+doctype html
+html
+  head
+    title Registro de Usuario
+    link(rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css")
+    link(rel='stylesheet', href='https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css')
+  body
+    .d-flex.justify-content-center.align-items-center.min-vh-100.bg-light
+      .card.shadow-lg(style="width: 400px;")
+        .card-header.bg-success.text-white.text-center
+          h2 Registro de Usuario
+        .card-body
+          form(action="/auth/registro" method="POST")
+            // Mensajes de error
+            each error in errores
+              .alert.alert-danger #{error.msg}
+
+            // Campos del formulario
+            .form-group
+              label(for="user_name") Nombre de Usuario
+              input.form-control(type="text" name="user_name" placeholder="Ingresa tu nombre de usuario" required)
+
+            .form-group.mt-3
+              label(for="nombre") Nombre Completo
+              input.form-control(type="text" name="nombre" placeholder="Ingresa tu nombre completo" required)
+
+            .form-group.mt-3
+              label(for="rut") RUT
+              input.form-control(type="text" name="rut" placeholder="Ingresa tu RUT" required)
+
+            .form-group.mt-3
+              label(for="correo") Correo
+              input.form-control(type="email" name="correo" placeholder="Ingresa tu correo" required)
+
+            .form-group.mt-3
+              label(for="password") Contraseña
+              input.form-control(type="password" name="password" placeholder="Ingresa tu contraseña" required minlength="8")
+
+            button.btn.btn-success.btn-block.mt-4(type="submit")
+              i.bi.bi-person-plus-fill.mr-1 Registrarse
+
+          .text-center.mt-3
+            p ¿Ya tienes cuenta? 
+            a(href='/auth/login', class='text-success') Inicia sesión aquí
+
+    // Scripts de Bootstrap
+    script(src="https://code.jquery.com/jquery-3.5.1.slim.min.js")
+    script(src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js")
+    script(src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js")

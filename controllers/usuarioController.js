@@ -92,6 +92,20 @@ const eliminarUsuario = (req, res) => {
         .catch(err => res.status(500).send('Error al eliminar el usuario: ' + err.message));
 }
 
+// async function verContraseña() {
+//     try {
+//       const usuario = await Usuario.findOne({ where: { correo: 'walter@gmail.com' } });
+//       if (usuario) {
+//         console.log('Contraseña cifrada:', usuario.password);
+//       } else {
+//         console.log('Usuario no encontrado');
+//       }
+//     } catch (error) {
+//       console.error('Error al obtener el usuario:', error);
+//     }
+//   }
+// verContraseña();  
+
 module.exports = {
     formularioAgregar,
     agregarUsuario,

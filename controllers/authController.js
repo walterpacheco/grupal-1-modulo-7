@@ -5,46 +5,60 @@ const Usuario = require('../models/Usuario');
 
 // Renderizar formulario de registro
 const formularioRegistro = (req, res) => {
-  res.render('auth/registro');
+  res.render('auth/registro', { errores: [] });  // Enviamos errores como array vacío
 };
 
 // Registrar usuario
 const registrarUsuario = async (req, res) => {
-  const errores = validationResult(req);
-  if (!errores.isEmpty()) {
-    return res.render('auth/registro', { errores: errores.array() });
-  }
-
-  const { nombre, correo, contraseña } = req.body;
-  try {
-    const usuarioExistente = await Usuario.findOne({ where: { correo } });
-    if (usuarioExistente) {
-      return res.render('auth/registro', { errores: [{ msg: 'Este correo ya está registrado' }] });
+    const errores = validationResult(req);
+    if (!errores.isEmpty()) {
+      return res.render('auth/registro', { errores: errores.array() });
     }
-
-    const hash = await bcrypt.hash(contraseña, 10);
-    await Usuario.create({ nombre, correo, contraseña: hash, perfil: 'comprador' });
-    res.redirect('/login');
-  } catch (error) {
-    res.status(500).send('Error en el registro: ' + error.message);
-  }
-};
+  
+    const { user_name, nombre, rut, correo, password } = req.body; // Agrega `user_name` y `rut`
+    
+    try {
+      const usuarioExistente = await Usuario.findOne({ where: { correo } });
+      if (usuarioExistente) {
+        return res.render('auth/registro', { errores: [{ msg: 'Este correo ya está registrado' }] });
+      }
+  
+      // Cifrar la contraseña
+      const hash = await bcrypt.hash(password, 10);
+      
+      // Crear el usuario con todos los campos necesarios
+      await Usuario.create({ user_name, nombre, rut, correo, password: hash, rol: 'comprador' });
+      res.redirect('/auth/login');
+    } catch (error) {
+      res.status(500).send('Error en el registro: ' + error.message);
+    }
+  };
+  
 
 // Renderizar formulario de login
 const formularioLogin = (req, res) => {
-  res.render('auth/login');
+  res.render('auth/login', { errores: [] });  // Inicializamos errores como un array vacío
 };
 
 // Iniciar sesión
 const iniciarSesion = async (req, res) => {
-  const { correo, contraseña } = req.body;
+  const { correo, password } = req.body;  // Usamos `password` aquí también
   try {
     const usuario = await Usuario.findOne({ where: { correo } });
-    if (!usuario || !await bcrypt.compare(contraseña, usuario.contraseña)) {
+    
+    // Verificar que el usuario existe y tiene una contraseña almacenada
+    if (!usuario || !usuario.password) {
       return res.render('auth/login', { errores: [{ msg: 'Credenciales incorrectas' }] });
     }
+
+    // Comparar contraseñas
+    const esContraseñaCorrecta = await bcrypt.compare(password, usuario.password);  // Comparamos con `usuario.password`
+    if (!esContraseñaCorrecta) {
+      return res.render('auth/login', { errores: [{ msg: 'Credenciales incorrectas' }] });
+    }
+
     // Redirección según perfil
-    if (usuario.perfil === 'administrador') {
+    if (usuario.rol === 'administrador') {
       return res.redirect('/admin');
     } else {
       return res.redirect('/productos');
