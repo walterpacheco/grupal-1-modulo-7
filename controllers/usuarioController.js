@@ -31,7 +31,7 @@ const consultarUsuarios = (req, res) => {
 
 const formularioBuscarCorreo = (req, res) => {
     console.log("Renderizando la página de búsqueda por correo");
-    res.render('buscar');
+    res.render('usuario/buscar');
 };
 
 // Consultar un usuario por correo
@@ -41,7 +41,7 @@ const consultarUsuarioPorCorreo = (req, res) => {
     usuarioServicio.consultarUsuarioPorCorreo(correo)
         .then(usuario => {
             if (usuario) {
-                res.render('consultar_correo', { usuario });  // Renderizar vista con los datos del usuario
+                res.render('usuario/consultar_correo', { usuario });  // Renderizar vista con los datos del usuario
             } else {
                 res.status(404).send('No se encontró usuario con ese correo');
             }
