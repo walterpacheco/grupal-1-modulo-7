@@ -34,13 +34,12 @@ const registrarUsuario = async (req, res) => {
   }
 };
 
-  
-
 // Renderizar formulario de login
 const formularioLogin = (req, res) => {
   res.render('auth/login', { errores: [] });  // Inicializamos errores como un array vacío
 };
 
+// Iniciar sesión
 const iniciarSesion = async (req, res) => {
   const { correo, password } = req.body;
   try {
@@ -57,6 +56,9 @@ const iniciarSesion = async (req, res) => {
       return res.render('auth/login', { errores: [{ msg: 'Credenciales incorrectas' }] });
     }
 
+    // Guardar el usuario en la sesión
+    req.session.user = { id: usuario.id, rol: usuario.rol, correo: usuario.correo };
+
     // Redirección según perfil
     if (usuario.rol === 'administrador') {
       return res.redirect('/admin');
@@ -68,10 +70,17 @@ const iniciarSesion = async (req, res) => {
   }
 };
 
+// Cerrar sesión
+const cerrarSesion = (req, res) => {
+  req.session.destroy(() => {
+    res.redirect('/auth/login');
+  });
+};
 
 module.exports = {
   formularioRegistro,
   registrarUsuario,
   formularioLogin,
-  iniciarSesion
+  iniciarSesion,
+  cerrarSesion
 };

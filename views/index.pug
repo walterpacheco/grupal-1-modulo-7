@@ -2,11 +2,9 @@ doctype html
 html
   head
     title Página Principal
-    // Enlace a Bootstrap CSS
     link(rel='stylesheet', href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css')
     link(rel='stylesheet', href='/styles.css')
   body
-    // Barra de navegación
     nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
       .container
         a.navbar-brand(href='/') Ecommerce
@@ -14,46 +12,42 @@ html
           span.navbar-toggler-icon
         #navbarNav.collapse.navbar-collapse
           ul.navbar-nav.ms-auto
-            li.nav-item
-              a.nav-link(href='/usuarios') Usuarios
-            li.nav-item
-              a.nav-link(href='/productos') Productos
-            // Opciones de autenticación
-            li.nav-item
-              a.nav-link(href='/auth/registro')
-                i.bi.bi-person-plus-fill.mr-1 Registrarse
-            li.nav-item
-              a.nav-link(href='/auth/login')
-                i.bi.bi-box-arrow-in-right.mr-1 Iniciar Sesión
+            if !user
+              li.nav-item
+                a.nav-link(href='/auth/registro') Registrarse
+              li.nav-item
+                a.nav-link(href='/auth/login') Iniciar Sesión
+            else
+              li.nav-item
+                a.nav-link(href='/auth/logout') Cerrar sesión
 
-    // Contenedor principal
     .container.mt-5
-      .row
-        .col-md-6.offset-md-3
-          h1.text-center.mb-5.text-primary Página Principal
+      h1.text-center.mb-5.text-primary Bienvenido a la Tienda Ecommerce
 
-          // Sección de Usuarios
-          .card.mb-4.shadow
-            .card-header.bg-primary.text-white.text-center
-              h2 Usuarios
-            .card-body
-              p.text-muted.text-center Gestiona los usuarios desde aquí.
-              a(href='/usuarios/agregar', class='btn btn-success btn-lg w-100 mb-2')
-                i(class='bi bi-person-plus') Agregar Usuario
-              a(href='/usuarios/', class='btn btn-primary btn-lg w-100 mb-2')
-                i(class='bi bi-people') Consultar Usuarios
-              a(href='/usuarios/buscar', class='btn btn-secondary btn-lg w-100')
-                i(class='bi bi-search') Consultar por Correo
+      if user && user.rol === 'admin'
+        .row
+          .col-md-6.offset-md-3
+            .card.mb-4.shadow
+              .card-header.bg-primary.text-white.text-center
+                h2 Administración de Usuarios
+              .card-body
+                p.text-muted.text-center Gestiona los usuarios desde aquí.
+                a(href='/usuarios/agregar', class='btn btn-success btn-lg w-100 mb-2') Agregar Usuario
+                a(href='/usuarios/', class='btn btn-primary btn-lg w-100 mb-2') Consultar Usuarios
+                a(href='/usuarios/buscar', class='btn btn-secondary btn-lg w-100') Consultar por Correo
 
-          // Sección de Productos
-          .card.shadow
-            .card-header.bg-secondary.text-white.text-center
-              h2 Productos
-            .card-body
-              p.text-muted.text-center Accede al catálogo de productos.
-              a(href='/productos', class='btn btn-primary btn-lg w-100')
-                i(class='bi bi-box-seam') Ver Productos
+            .card.shadow
+              .card-header.bg-secondary.text-white.text-center
+                h2 Administración de Productos
+              .card-body
+                p.text-muted.text-center Accede al catálogo de productos.
+                a(href='/productos', class='btn btn-primary btn-lg w-100') Ver Productos
 
-    // Enlace a Bootstrap JS y Bootstrap Icons (para iconos)
-    script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js')
-    link(rel='stylesheet', href='https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css')
+      .row.mt-5
+        if productos && productos.length
+          each producto in productos
+            .col-md-4.mb-4
+              .card
+                img.card-img-top(src=producto.imagenUrl alt=producto.nombre)
+                .card-body
+                  h5.card-title
