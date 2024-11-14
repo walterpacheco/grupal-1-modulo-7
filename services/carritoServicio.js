@@ -1,5 +1,5 @@
-const Carrito = require('models/Carrito');
-const Producto = require('models/Producto');
+const Carrito = require('../models/Carrito');
+const Producto = require('../models/Producto');
 
 //Agregar Producto al carro
 const agregarProducto = async (req, res) => {
@@ -12,15 +12,15 @@ const agregarProducto = async (req, res) => {
         }
 
         //Verificar si el producto ya esta en el carrito
-        const itemExistente = await Producto.findByPk({where: {productoId}});
-        if (!itemExistente) {
+        const itemExistente = await Producto.findOne({where: {productoId}});
+        if (itemExistente) {
             itemExistente.cantidad += cantidad;
             await itemExistente.save();
             return res.status(200).send(itemExistente);
         }
-
         //si existe lo agregamos al carrito
         const nuevoItem = await Carrito.create({productoId, cantidad})
+        return res.status(201).send(nuevoItem);
     } catch (error) {
         throw new Error(error.message);
     }

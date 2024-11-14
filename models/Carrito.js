@@ -1,6 +1,6 @@
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../config/db');
-const Producto = require('Producto')
+const Producto = require('../models/Producto');
 
 const Carrito = sequelize.define('carrito', {
     productoId:{
@@ -21,4 +21,4 @@ const Carrito = sequelize.define('carrito', {
 Carrito.belongsTo(Producto, { foreignKey: 'productoId', as: 'producto' });
 Producto.hasMany(Carrito, { foreignKey: 'productoId' });
 
-module.exports = Producto;
+module.exports = Carrito;

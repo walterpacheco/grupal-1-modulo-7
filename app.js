@@ -12,6 +12,8 @@ const compradorRutas = require('./routes/compradorRutas');
 const authMiddleware = require('./middleware/authMiddleware');
 const mainController = require('./controllers/mainController'); // Importamos el controlador principal
 
+const carritoRutas = require('../routes/carritoRutas');
+
 // Carga las variables de entorno desde el archivo .env
 dotenv.config();
 
@@ -60,6 +62,7 @@ app.use('/auth', authRoutes);  // No requiere autenticación
 app.use('/usuarios', authMiddleware, usuarioRutas);  // Protege la ruta de usuarios
 app.use('/productos', authMiddleware, productoRutas);  // Protege la ruta de productos
 app.use('/comprador', authMiddleware, compradorRutas); // Protege la ruta de comprador
+app.use('/carrito', carritoRutas);
 
 // Ruta principal
 app.get('/',authMiddleware, mainController.index); // Usamos el controlador para la página principal

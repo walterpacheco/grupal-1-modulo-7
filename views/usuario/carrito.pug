@@ -1,27 +1,64 @@
-// carrito.pug
-extends layout
+doctype html
+html
+    head
+        title Carrito de Compras
+        link(rel="stylesheet", href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css")
+        link(rel='stylesheet', href='https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css')
+        link(rel="stylesheet", href="/styles.css") 
+    body
+        //Barra de navegación
+        nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.d-flex.align-items-center
+            .container
+                a.navbar-brand(href='/') Ecommerce
+                button.navbar-toggler(type='button', data-toggle='collapse', data-target='#navbarNav', aria-controls='navbarNav', aria-expanded='false', aria-label='Toggle navigation')
+                    span.navbar-toggler-icon
+                #navbarNav.collapse.navbar-collapse
+                    ul.navbar-nav.ml-auto
+                        li.nav-item
+                            a.nav-link(href='/productos') Productos
+                        //Mostrar el enlace de Usuarios solo si es admin
+                        if esAdmin
+                            li.nav-item
+                                a.nav-link(href='/usuarios') Usuarios
+                        //Mostrar el botón de cerrar sesión solo si el usuario está autenticado
+                        if usuarioAutenticado
+                            li.nav-item
+                                form(action='/cerrar-sesion', method='POST', style="display:inline")
+                                    button.nav-link.btn.btn-danger(type="submit") Cerrar Sesión
+        .container.mt-5
+            h1.text-center.mb-5 Carrito de Compras
 
-block content
-    h1 Mi Carrito de Compras
+            if carrito.length === 0
+                p.text-center No hay productos en tu carrito.
+            else
+                table.table.table-hover.table-bordered
+                    thead
+                        tr
+                            th Nombre
+                            th Precio
+                            th Cantidad
+                            th Total
+                            th Acciones
+                    tbody
+                        each producto in carrito
+                            tr
+                                td.text-center #{producto.nombre}
+                                td.text-center #{producto.precio} $
+                                td.text-center
+                                    form(action=`/carrito/actualizar/${producto.id}`, method="PUT", class="form-inline")
+                                        input.form-control(type="number" name="cantidad" value=producto.cantidad min="1", style="width: 70px;")
+                                        button.btn.btn-primary.ml-2(type="submit") Modificar
+                                td.text-center #{producto.precio * producto.cantidad} $
+                                td.text-center
+                                    form(action=`/carrito/eliminar/${producto.id}`, method="DELETE")
+                                        button.btn.btn-danger(type="submit") Eliminar
 
-    if carrito.length > 0
-        table
-            thead
-                tr
-                    th Producto
-                    th Cantidad
-                    th Precio
-                    th Acción
-            tbody
-                each item in carrito
-                    tr
-                        td= item.nombre
-                        td= item.cantidad
-                        td= item.precio
-                        td
-                            a(href=`/eliminar-producto/${item.id}`) Eliminar
-    else
-        p Tu carrito está vacío.
+            hr
+            h4.text-right.mb-5 Total: #{total} $
 
-    // Botón para continuar con la compra
-    a(href='/productos') Continuar comprando
+            // Botón para proceder con la compra
+            a.btn.btn-success(href="/comprar") Realizar compra
+
+    script(src="https://code.jquery.com/jquery-3.5.1.slim.min.js")
+    script(src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js")
+    script(src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js")
