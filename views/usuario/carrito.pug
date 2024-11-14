@@ -1,0 +1,27 @@
+// carrito.pug
+extends layout
+
+block content
+    h1 Mi Carrito de Compras
+
+    if carrito.length > 0
+        table
+            thead
+                tr
+                    th Producto
+                    th Cantidad
+                    th Precio
+                    th Acción
+            tbody
+                each item in carrito
+                    tr
+                        td= item.nombre
+                        td= item.cantidad
+                        td= item.precio
+                        td
+                            a(href=`/eliminar-producto/${item.id}`) Eliminar
+    else
+        p Tu carrito está vacío.
+
+    // Botón para continuar con la compra
+    a(href='/productos') Continuar comprando

@@ -14,7 +14,7 @@ const conectarBD = async () => {
         await sequelize.authenticate();
         console.log('Postgres conectado...');
     } catch (error) {
-        console.error('No se pudo conectar a la base de datos:', error);
+        console.error('No se pudo conectar a la base de datos:', error.message);
         process.exit(1);
     }
     };

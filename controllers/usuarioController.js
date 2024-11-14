@@ -3,7 +3,7 @@ const Usuario = require('../models/Usuario');
 
 // Renderizar el formulario para agregar un nuevo usuario
 const formularioAgregar = (req, res) => {
-    res.render('agregar');
+    res.render('usuario/agregar');
 };
 
 // Agregar un nuevo usuario
@@ -25,13 +25,13 @@ const agregarUsuario = (req, res) => {
 // Consultar todos los usuarios
 const consultarUsuarios = (req, res) => {
     usuarioServicio.consultarUsuarios()
-        .then(usuarios => res.render('consultar', { usuarios }))
+        .then(usuarios => res.render('usuario/consultar', { usuarios }))
         .catch(err => res.status(500).send('Error al consultar usuarios: ' + err.message));
 }
 
 const formularioBuscarCorreo = (req, res) => {
     console.log("Renderizando la página de búsqueda por correo");
-    res.render('buscar');
+    res.render('usuario/buscar');
 };
 
 // Consultar un usuario por correo
@@ -41,7 +41,7 @@ const consultarUsuarioPorCorreo = (req, res) => {
     usuarioServicio.consultarUsuarioPorCorreo(correo)
         .then(usuario => {
             if (usuario) {
-                res.render('consultar_correo', { usuario });  // Renderizar vista con los datos del usuario
+                res.render('usuario/consultar_correo', { usuario });  // Renderizar vista con los datos del usuario
             } else {
                 res.status(404).send('No se encontró usuario con ese correo');
             }
@@ -55,7 +55,7 @@ const formularioActualizar = (req, res) => {
     usuarioServicio.consultarUsuarioPorId(id)
     .then(usuario => {
         if (usuario) {
-            res.render('actualizar', { usuario });
+            res.render('usuario/actualizar', { usuario });
         } else {
             res.status(404).send('No se encontró usuario con ese Id');
         }
@@ -67,6 +67,12 @@ const formularioActualizar = (req, res) => {
 const actualizarUsuario = (req, res) => {
     const { user_name, password, correo, nombre, rut, rol } = req.body;
     const id = req.params.id;
+
+    // Verificar si el usuario tiene el rol de administrador
+    if (req.user && req.user.rol !== 'admin') {
+        return res.status(403).send('No tienes permisos para actualizar usuarios');
+    }
+
     usuarioServicio.actualizarUsuario(id, user_name, password, correo, nombre, rut, rol)
         .then(usuario => {
             if (usuario) {
@@ -81,6 +87,12 @@ const actualizarUsuario = (req, res) => {
 // Eliminar un usuario
 const eliminarUsuario = (req, res) => {
     const { id } = req.params;
+
+    // Verificar si el usuario tiene el rol de administrador
+    if (req.user && req.user.rol !== 'admin') {
+        return res.status(403).send('No tienes permisos para eliminar usuarios');
+    }
+
     usuarioServicio.eliminarUsuario(id)
         .then(usuario => {
             if (usuario) {
@@ -91,6 +103,20 @@ const eliminarUsuario = (req, res) => {
         })
         .catch(err => res.status(500).send('Error al eliminar el usuario: ' + err.message));
 }
+
+// async function verContraseña() {
+//     try {
+//       const usuario = await Usuario.findOne({ where: { correo: 'walter@gmail.com' } });
+//       if (usuario) {
+//         console.log('Contraseña cifrada:', usuario.password);
+//       } else {
+//         console.log('Usuario no encontrado');
+//       }
+//     } catch (error) {
+//       console.error('Error al obtener el usuario:', error);
+//     }
+//   }
+// verContraseña();  
 
 module.exports = {
     formularioAgregar,
